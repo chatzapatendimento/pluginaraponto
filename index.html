@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Chat</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module">
+        import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.3/dist/web.js';
+        window.Typebot = Typebot; // Disponibiliza o Typebot globalmente
+    </script>
+</head>
+<body>
+    <!-- Chat de Chamada -->
+<div id="chat-call" class="chat-container">
+    <!-- Bolha de Mensagem -->
+    <div class="chat-bubble">
+        <div class="typing-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </div>
+    <!-- Avatar no lado direito -->
+    <div class="profile-container">
+        <img src="https://s3.typebot.io/public/workspaces/cm1phfshl003t3eii8w05yvqa/typebots/cm2uxrjgl000114hkqz5xo2ta/blocks/phehu4kfk6fvxk7f0qr2h17y?v=1734639126382" 
+             alt="Foto do Perfil" class="profile-pic">
+    </div>
+</div>
+
+
+    <!-- Chat Já -->
+    <div id="chat-now" class="chat-container" style="display: none;">
+        <div class="sidebar"></div>
+        <div class="chat-header">
+            <div class="user-img"></div>
+            <div class="user-info">
+                <span class="user-name">Elisa - Araponto</span>
+                <span class="user-status">Online agora</span>
+            </div>
+            <span class="close-btn">&times;</span>
+        </div>
+        <div class="chat-body">
+            <div class="message typing-bubble" id="typing-bubble">
+                <div class="user-img"></div>
+                <span class="chat-text typing-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </span>
+            </div>
+            <div class="message" id="message-1" style="display: none;">
+                <div class="user-img"></div>
+                <span class="chat-text">Olá, tudo bem?</span>
+            </div>
+            <div class="message typing-bubble" id="typing-bubble-2" style="display: none;">
+                <div class="user-img"></div>
+                <span class="chat-text typing-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </span>
+            </div>
+            <div class="message message-offer" id="message-2" style="display: none;">
+                <p>Quer <strong>Começar</strong> seu <strong>Teste Grátis</strong> da Plataforma? 😍</p>
+                <button class="start-btn">
+                    Sim, começar agora <span class="arrow">→</span>
+                </button>
+                <p class="privacy">Clicando acima você aceita nossas <a href="#">Políticas de Privacidade</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    const chatCall = document.getElementById('chat-call'); // Contêiner principal do Chat Call
+    const chatBubble = document.querySelector('.chat-bubble'); // Bolha de mensagem
+    const avatar = document.querySelector('.profile-container'); // Avatar do Chat Call
+
+    const startChatCallSequence = () => {
+        if (chatBubble) {
+            // Passo 1: Mostra a bolha com efeito de digitação
+            chatBubble.innerHTML = `
+                <div class="typing-dots">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            `;
+            chatBubble.style.display = 'flex'; // Garante que a bolha esteja visível
+
+            // Passo 2: Após 3 segundos, substitui a bolha de digitação pela mensagem
+            setTimeout(() => {
+                chatBubble.innerHTML = `
+                    <p>
+                        Quer <strong>Começar</strong> seu <strong>Teste Grátis</strong> da Plataforma? 
+                        <span class="emoji">😄</span>
+                    </p>
+                `;
+                chatBubble.style.display = 'flex'; // Garante que a mensagem apareça no mesmo lugar
+            }, 3000); // Transição após 3 segundos
+        }
+    };
+
+    // Garante que o avatar e a bolha estejam visíveis no início
+    if (chatCall) {
+        chatCall.style.display = 'flex';
+        avatar.style.display = 'flex';
+        chatBubble.style.display = 'flex';
+    }
+
+    // Inicia a sequência
+    startChatCallSequence();
+});
+
+
+    </script>
+</body>
+</html>
+
+</body>
+<style>
+/* Estilo Geral */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f9f9f9;
+}
+body {
+    background: transparent !important; /* Torna o fundo do chat transparente */
+}
+/* Contêiner do Chat Call */
+#chat-call {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 360px;
+    z-index: 1000;
+}
+
+#chat-call {
+    cursor: pointer; /* Indica ao usuário que o elemento é clicável */
+}
+/* Estilo do Balão de Mensagem */
+/* Bolha de mensagem */
+.chat-bubble {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    max-width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Seta que liga o avatar à mensagem */
+.chat-bubble::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -12px;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid #fff;
+    transform: translateY(-50%);
+}
+/* Efeito de digitação */
+.typing-dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #B30400; /* Cor dos pontinhos */
+    border-radius: 50%;
+    animation: blink 1.2s infinite;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+/* Contêiner do Avatar */
+.profile-container {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #4CAF50; /* Indicador de online */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('https://s3.typebot.io/public/workspaces/cm1phfshl003t3eii8w05yvqa/typebots/cm2uxrjgl000114hkqz5xo2ta/blocks/phehu4kfk6fvxk7f0qr2h17y?v=1734639126382'); /* Imagem do avatar */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* Círculo verde indicando que está online */
+.profile-container::after {
+    content: ''; /* Necessário para criar o pseudo-elemento */
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px; /* Tamanho do círculo */
+    height: 12px; /* Tamanho do círculo */
+    background-color: #4CAF50; /* Cor verde */
+    border-radius: 50%; /* Forma circular */
+    border: 2px solid #fff; /* Borda branca */
+    animation: pulse 1.5s infinite ease-in-out; /* Animação */
+}
+
+/* Animação de pulsação */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Imagem de Perfil */
+.profile-pic {
+    width: 56px; /* Tamanho da imagem dentro do círculo */
+    height: 56px; /* Proporção da imagem */
+    border-radius: 50%; /* Formato circular */
+    object-fit: cover; /* Ajusta a imagem ao contêiner */
+}
+
+/* Indicador de Digitação */
+.typing-indicator {
+    display: inline-block;
+    margin-left: 8px;
+    position: relative;
+    width: 20px;
+    height: 10px;
+}
+
+.dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    border-radius: 50%;
+    background-color: #B30400;
+    animation: typing 1.5s infinite ease-in-out;
+}
+
+.dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes typing {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Animações para FadeIn */
+@keyframes fadeInAvatar {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInBubble {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInContainer {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#chat-now {
+    position: fixed; /* Fixa o chat no canto da tela */
+    bottom: 20px; /* Distância da borda inferior */
+    right: 20px; /* Distância da borda direita */
+    z-index: 1000; /* Garante que fique acima de outros elementos */
+    display: flex;
+    flex-direction: column; /* Elementos dispostos em coluna */
+    width: 420px; /* Define uma largura adequada */
+    max-width: 100%; /* Garante responsividade */
+    border-radius: 15px; /* Bordas arredondadas */
+    background-color: #fff; /* Fundo branco */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra para destaque */
+    overflow: hidden; /* Evita que o conteúdo extrapole */
+    font-size: 14px;
+}
+
+
+/* Barra lateral com degradê */
+.sidebar {
+    background: linear-gradient(to top, transparent, #B30400 20%, transparent);
+    width: 30px; /* Largura da barra lateral */
+    height: 100%; /* A altura será 100% do contêiner */
+    flex-shrink: 0; /* Impede que a barra lateral encolha */
+}
+
+/* Cabeçalho */
+.chat-header {
+    background-color: #B30400;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 14px 12px;
+    position: relative;
+}
+
+.user-img { 
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-image: url(https://s3.typebot.io/public/workspaces/cm1phfshl003t3eii8w05yvqa/typebots/cm2uxrjgl000114hkqz5xo2ta/blocks/phehu4kfk6fvxk7f0qr2h17y?v=1734639126382);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    flex-shrink: 0; /* Impede o encolhimento */
+}
+
+/* Círculo verde de online com animação */
+.user-img::after {
+    content: "";
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #28a745;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    border: px solid white;
+    animation: pulse 1.5s infinite ease-in-out; /* Animação de pulsação */
+}
+
+/* Animação de pulsação */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Remover o círculo verde do avatar nas mensagens */
+.message .user-img::after {
+    display: none;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.user-status {
+    font-size: 12px;
+    color: #e4f1ff;
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    cursor: pointer;
+    color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    transition: border-color 0.3s;
+}
+
+.close-btn:hover {
+    border-color: #ccc;
+}
+
+/* Corpo do Chat */
+.chat-body {
+    padding: 20px;
+    background-color: #f9f9f9;
+    overflow-y: auto; /* Adiciona a rolagem vertical */
+    max-height: 330px; /* Limita a altura da área de chat */
+    padding-bottom: 50px; /* Adiciona um espaço extra para a simulação de digitação */
+}
+
+/* Estilizando a barra de rolagem */
+.chat-body::-webkit-scrollbar {
+    width: 6px; /* Largura da barra de rolagem */
+}
+
+.chat-body::-webkit-scrollbar-thumb {
+    background-color: #B30400; /* Cor do "polegar" da barra de rolagem */
+    border-radius: 10px; /* Arredonda as bordas */
+}
+
+.chat-body::-webkit-scrollbar-thumb:hover {
+    background-color: #8A0200; /* Cor ao passar o mouse */
+}
+
+
+.message {
+    display: flex;
+    align-items: flex-start; /* Garante alinhamento no topo */
+    margin-bottom: 10px;
+    gap: 10px; /* Espaço entre avatar e texto */
+}
+
+/* Ajuste para mensagens do usuário */
+.message.user-message {
+    flex-direction: row-reverse; /* Alinha avatar à direita */
+    justify-content: flex-end;
+}
+
+/* Avatar nas mensagens */
+.message .user-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Caixa de texto */
+.message .chat-text {
+    background-color: #f2f2f2;
+    color: #333;
+    border-radius: 22px;
+    padding: 15px 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 70%;
+    word-wrap: break-word; /* Quebra de palavras longas */
+}
+
+.message.user-message .chat-text {
+    background-color: #d8eafd; /* Cor diferente para mensagens do usuário */
+}
+
+.message .chat-text p {
+    margin: 0;
+}
+
+/* Caixa de oferta */
+.message-offer {
+    background-color: #EEEEEE;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: calc(100% - 125px);
+    margin: 20px;
+    /* Desloca a caixa para a esquerda ou direita */
+    margin-left: 50px;  /* Ajuste o valor em px para deslocar à esquerda */
+    /* margin-right: 50px;  Para deslocar à direita, use esta linha */
+}
+
+
+.message-offer p {
+    margin-bottom: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    
+}
+
+.start-btn {
+    background-color: #B30400;
+    color: #fff;
+    border: none;
+    padding: 14px 18px;
+    border-radius: 25px;
+    font-size: 16px;  /* Tamanho do texto */
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.start-btn .arrow {
+    font-size: 20px;  /* Aumenta o tamanho da seta */
+    margin-left: 1px; /* Ajusta o espaçamento entre o texto e a seta */
+}
+
+.start-btn:hover {
+    background-color: #8A0200;
+}
+
+/* Texto da política de privacidade */
+.chat-container .privacy {
+    font-size: 11px !important;
+    color: #777;
+    margin-top: 20px;
+}
+
+.chat-container .privacy a {
+    color: #0095f6;
+    text-decoration: none;
+}
+.typing-dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #B30400; /* Cor do pontinho */
+    border-radius: 50%;
+    animation: blink 1.2s infinite;
+}
+
+.dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+
+/* Aplica a animação às mensagens */
+.message {
+    animation: fadeIn 0.5s ease-in-out;
+    display: none; /* Controlado pelo JavaScript */
+}
+
+/* Ajuste para mensagens exibidas */
+.message.show {
+    display: flex; /* Para mensagens de texto com o avatar */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.message-offer.show {
+    display: block; /* Para mensagens maiores (como ofertas) */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Ocultar todos os elementos quando o Typebot estiver ativo */
+body.typebot-active #chat-call,
+body.typebot-active #chat-now {
+    display: none !important;
+}
+
+/* Garantir que o Typebot continue visível */
+body.typebot-active {
+    overflow: hidden;
+}
+/* Estilo para a bolha de digitação no Chat Call */
+.chat-bubble .typing-dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-bubble .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 50%;
+    animation: blink 1.2s infinite;
+}
+
+.chat-bubble .dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.chat-bubble .dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Animação de digitação */
+@keyframes blink {
+    0%, 100% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+@media (max-width: 480px) {
+    /* Ajustar o balão de mensagem */
+     #chat-call {
+        position: fixed; /* Fixa o Chat Call na tela */
+        bottom: 65px; /* Define 40px de distância do rodapé */
+        right: 15px; /* Mantém 20px da lateral direita */
+        display: flex; /* Garante o alinhamento interno */
+        align-items: center; /* Alinha o conteúdo verticalmente */
+        z-index: 10000; /* Garante que o Chat Call fique acima de outros elementos */
+    }
+}
+    
+    .chat-bubble {
+        max-width: 75%; /* Reduz a largura do balão */
+        font-size: 16px; /* Ajusta o tamanho da fonte */
+        padding: 10px 15px; /* Espaçamento interno */
+        border-radius: 6px; /* Bordas arredondadas mais suaves */
+        margin-left: 8px; /* Espaço para afastar do avatar */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Sombra mais sutil */
+    }
+
+    /* Ajustar o avatar */
+    .profile-container {
+        width: 60px; /* Tamanho menor do avatar */
+        height: 60px;
+    }
+
+    .profile-pic {
+        width: 55px; /* Ajuste da imagem no avatar */
+        height: 55px;
+    }
+
+    /* Ajustar o indicador de status online */
+    .profile-container::after {
+        width: 8px; /* Indicador menor */
+        height: 8px;
+        bottom: 5px; /* Ajuste de posição */
+        right: 5px; /* Ajuste de posição */
+    }
+
+    /* Ajustar o contêiner geral do Chat Call */
+    #chat-call {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Espaço entre o balão e o avatar */
+    }
+}
+@media (max-width: 480px) {
+    #chat-now {
+        position: fixed; /* Fixa o Chat Now na tela */
+        bottom: 0; /* Alinha na parte inferior */
+        left: 0; /* Remove posicionamento à direita */
+        width: 100%; /* Garante que ocupe toda a largura */
+        height: 90%; /* Define altura de 90% da tela */
+        background-color: #fff; /* Fundo branco */
+        border-radius: 12px 12px 0 0; /* Bordas arredondadas no topo */
+        box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil */
+        z-index: 10000; /* Certifica que esteja acima de outros elementos */
+        margin: 0; /* Remove margens */
+        padding: 0; /* Remove espaçamentos internos */
+        box-sizing: border-box; /* Inclui padding e borda no cálculo da largura */
+    }
+    .chat-body {
+        padding: 20px; /* Ajuste do espaçamento interno */
+        background-color: #f9f9f9; /* Fundo do contêiner */
+        overflow-y: auto; /* Adiciona rolagem vertical, se necessário */
+        max-height: 75%; /* Aumenta o comprimento máximo */
+        height: calc(100% - 60px); /* Ajusta dinamicamente a altura */
+        width: 100%; /* Garante que o contêiner ocupe toda a largura */
+        box-sizing: border-box; /* Inclui padding e bordas no cálculo da largura */
+    }
+}
+
+    .chat-body {
+        padding: 15px; /* Ajusta espaçamento interno */
+        overflow-y: auto; /* Adiciona rolagem se necessário */
+        max-height: calc(100% - 50px); /* Altura restante após o cabeçalho */
+    }
+
+    .chat-header {
+        width: 100%; /* Ocupa toda a largura */
+        box-sizing: border-box; /* Garante largura correta */
+    }
+}
+
+
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Selecionar os elementos do chat
+    const chatChamada = document.getElementById('chat-call'); // Chat de Chamada
+    const chatJa = document.getElementById('chat-now'); // Chat Já
+    const profileContainer = document.querySelector('.profile-container'); // Apenas o avatar
+    const chatBubble = document.querySelector('.chat-bubble'); // Balão de mensagem no Chat Call
+const startChatCallSequence = () => {
+    // Passo 1: Mostrar avatar e bolha de digitação
+    if (chatBubble) {
+        chatBubble.innerHTML = `
+            <div class="typing-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        `;
+    }
+
+    // Passo 2: Após 3 segundos, substituir bolha pela mensagem
+    setTimeout(() => {
+        if (chatBubble) {
+            chatBubble.innerHTML = `
+                <p>
+                    Quer <strong>Começar</strong> seu <strong>Teste Grátis</strong> da Plataforma? 
+                    <span class="emoji">😄</span>
+                </p>
+            `;
+        }
+    }, 3000); // Troca após 3 segundos
+};
+
+startChatCallSequence();
+
+
+// Substituir o showChatCall() pelo startChatCallSequence()
+startChatCallSequence();
+
+
+
+    // Selecionar elementos do Chat Já
+    const typingBubble1 = document.getElementById('typing-bubble');
+    const message1 = document.getElementById('message-1');
+    const typingBubble2 = document.getElementById('typing-bubble-2');
+    const message2 = document.getElementById('message-2');
+
+    // Controle de interação do usuário
+    let userInteracted = false;
+
+    // Detectar qualquer clique para registrar interação
+    document.addEventListener('click', () => {
+        userInteracted = true;
+    });
+
+    // Função para exibir o Chat Call completo (avatar + mensagem)
+    const showChatCall = () => {
+        if (chatChamada) {
+            chatChamada.style.display = 'flex'; // Exibe o Chat Call
+        }
+        if (chatBubble) {
+            chatBubble.style.display = 'flex'; // Exibe o balão de mensagem
+        }
+    };
+
+    // Função para exibir apenas o avatar
+    const showAvatarOnly = () => {
+        if (profileContainer) {
+            profileContainer.style.display = 'flex'; // Exibe o avatar
+        }
+        if (chatBubble) {
+            chatBubble.style.display = 'none'; // Oculta o balão de mensagem
+        }
+        if (chatChamada) {
+            chatChamada.style.display = 'flex'; // Garante que o Chat Call esteja visível
+        }
+    };
+
+    // Função para exibir o Chat Já
+const showChatJa = () => {
+    if (chatChamada) {
+        chatChamada.style.display = 'none'; // Esconde o Chat de Chamada
+    }
+    if (chatJa) {
+        chatJa.style.display = 'flex'; // Exibe o Chat Já
+
+        if (!isSecondCycle) {
+            // Primeiro ciclo
+            if (!isChatSequenceStarted) {
+                console.log("Primeiro ciclo: exibindo animação de digitação");
+                startChatSequence(); // Apenas no primeiro ciclo
+                isChatSequenceStarted = true; // Marca que a sequência foi iniciada
+            }
+        } else {
+            // Ciclos subsequentes
+            console.log("Ciclo subsequente: exibindo mensagens diretamente");
+            showChatNowWithoutTyping(); // Exibe mensagens diretamente
+        }
+    }
+};
+
+
+
+
+    // Sequência de mensagens no Chat Já
+    const startChatSequence = () => {
+        setTimeout(() => {
+            if (typingBubble1) typingBubble1.style.display = 'flex'; // Mostra a primeira bolha de digitação
+        }, 500); // 0.5 segundos
+
+        setTimeout(() => {
+            if (typingBubble1) typingBubble1.style.display = 'none'; // Esconde a bolha
+            if (message1) message1.style.display = 'flex'; // Mostra a primeira mensagem
+        }, 1500); // 1 segundo depois
+
+        setTimeout(() => {
+            if (typingBubble2) typingBubble2.style.display = 'flex'; // Mostra a segunda bolha de digitação
+        }, 2000); // 0.5 segundos depois
+
+        setTimeout(() => {
+            if (typingBubble2) typingBubble2.style.display = 'none'; // Esconde a bolha
+            if (message2) message2.style.display = 'block'; // Mostra a mensagem de oferta
+        }, 3000); // 1 segundo depois
+    };
+
+    // Exibir o Chat Call (avatar + mensagem) inicialmente
+    startChatCallSequence();
+
+    // Após 20 segundos, exibir o Chat Já se não houver interação
+    setTimeout(() => {
+        if (!userInteracted) {
+            showChatJa(); // Exibe o Chat Já
+        }
+    }, 20000); // 20 segundos
+
+// Botão de fechar no Chat Já
+let isSecondCycle = false; // Flag para identificar ciclos após o primeiro
+let isChatSequenceStarted = false; // Flag para evitar que a sequência de digitação seja iniciada duas vezes
+
+const closeButton = document.querySelector('.close-btn');
+if (closeButton) {
+    closeButton.addEventListener('click', () => {
+        console.log("Botão de fechar clicado!");
+
+        // Esconde o Chat Já
+        if (chatJa) {
+            chatJa.style.display = 'none'; // Esconde o Chat Now
+        }
+
+        // Exibe apenas o avatar do Chat Call
+        if (profileContainer) {
+            profileContainer.style.display = 'flex'; // Mostra apenas o avatar
+        }
+        if (chatBubble) {
+            chatBubble.style.display = 'none'; // Esconde o balão de mensagem
+        }
+        if (chatChamada) {
+            chatChamada.style.display = 'flex'; // Garante que o container do Chat Call esteja visível
+        }
+
+        // Após 40 segundos, exibir o Chat Now novamente (ajustado para ciclos)
+        setTimeout(() => {
+            console.log("Reabrindo Chat Now...");
+            if (!isSecondCycle) {
+                // Primeiro ciclo: exibe mensagem no Chat Call antes de abrir o Chat Now
+                if (chatChamada) {
+                    chatChamada.style.display = 'flex'; // Exibe o Chat Call
+                }
+                if (chatBubble) {
+                    chatBubble.style.display = 'flex'; // Mostra o balão de mensagem
+                }
+
+                // Após 20 segundos, abre o Chat Now com animação
+                setTimeout(() => {
+                    console.log("Abrindo Chat Now após mensagem do Chat Call...");
+                    showChatJa(); // Exibe o Chat Now com animação
+                    isSecondCycle = true; // Marca como segundo ciclo
+                }, 20000); // 20 segundos após o balão de mensagem
+            } else {
+                // Ciclos seguintes: abre o Chat Now direto com mensagens
+                showChatNowWithoutTyping(); // Exibe o Chat Now diretamente com mensagens
+            }
+        }, 40000); // 40 segundos para reabrir o Chat Now
+    });
+}
+
+// Função para exibir o Chat Now diretamente sem digitação
+const showChatNowWithoutTyping = () => {
+    if (chatJa) {
+        chatJa.style.display = 'flex'; // Exibe o Chat Now
+
+        // Garante que as bolhas de digitação estejam ocultas
+        if (typingBubble1) typingBubble1.style.display = 'none';
+        if (typingBubble2) typingBubble2.style.display = 'none';
+
+        // Mostra as mensagens diretamente
+        if (message1) {
+            message1.style.display = 'flex';
+        }
+        if (message2) {
+            message2.style.display = 'block';
+        }
+    }
+};
+
+
+// Exibir o Chat Já se não houver interação após 20 segundos
+setTimeout(() => {
+    if (!userInteracted) {
+        showChatJa(); // Exibe o Chat Já
+    }
+}, 20000); // 20 segundos
+
+
+
+    // Função para inicializar o Typebot e abrir diretamente
+    const initializeTypebot = () => {
+        if (window.Typebot) {
+            console.log("Inicializando Typebot...");
+            Typebot.initBubble({
+                typebot: "lead-magnet-3a9mx2z", // Substitua pelo seu ID do Typebot
+                theme: {
+                    button: {
+                        backgroundColor: "#075E54",
+                        customIconSrc: "https://s3.typebot.io/public/workspaces/cm1phfshl003t3eii8w05yvqa/typebots/cm2uxrjgl000114hkqz5xo2ta/blocks/phehu4kfk6fvxk7f0qr2h17y?v=1734639126382",
+                        size: "large"
+                    }
+                },
+            });
+            Typebot.open();
+            document.body.classList.add('typebot-active'); // Adiciona classe para ocultar outros chats
+        } else {
+            console.error("Typebot não está disponível no momento.");
+        }
+    };
+// Adicionar evento de clique ao Chat Call para abrir o Typebot
+if (chatChamada) {
+    chatChamada.addEventListener('click', () => {
+        console.log("Chat Call clicado! Redirecionando para o novo link...");
+        window.location.href = 'https://chatzapatendimento.github.io/cabe-alhorevis-onovo/'; // Substitua pelo link desejado
+    });
+}
+
+
+    // Botão "Sim, começar agora" para inicializar o Typebot
+ 
+        // Seleção do botão "Sim, testar agora"
+        const testNowButton = document.querySelector('.start-btn'); // Certifique-se de que o botão possui a classe .start-btn
+
+        if (testNowButton) {
+            testNowButton.addEventListener('click', () => {
+                console.log("Botão 'Sim, testar agora' clicado!");
+                window.location.href = 'https://chatzapatendimento.github.io/cabe-alhorevis-onovo/'; // Link do Typebot
+            });
+        }
+
+
+    // Restaurar comportamento após fechar o Typebot
+    if (window.Typebot) {
+        Typebot.onClose(() => {
+            document.body.classList.remove('typebot-active');
+            showChatCall(); // Volta ao Chat Call inicial (avatar + mensagem)
+        });
+    }
+});
+
+</script>
+</body>
+</html>

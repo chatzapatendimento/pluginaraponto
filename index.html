@@ -772,21 +772,18 @@ body.typebot-active {
         box-sizing: border-box; /* Garante largura correta */
     }
 }
-/* Garante que apenas o chat receba cliques */
-.chat-container {
-    pointer-events: auto;
-}
-
-/* Permite interações com elementos fora do chat */
-body.typebot-active #chat-call,
-body.typebot-active #chat-now {
+#chat-iframe {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 660px;
+    z-index: 99999;
     pointer-events: none;
 }
 
-/* Garante que o conteúdo do chat ainda seja clicável */
-body.typebot-active #chat-call *,
-body.typebot-active #chat-now * {
-    pointer-events: auto;
+#chat-iframe:hover {
+    pointer-events: auto; /* Ativa cliques no chat quando o usuário interage */
 }
 
 
@@ -1029,7 +1026,7 @@ setTimeout(() => {
 if (chatChamada) {
     chatChamada.addEventListener('click', () => {
         console.log("Chat Call clicado! Redirecionando para o novo link...");
-        window.location.href = 'https://chatzapatendimento.github.io/cabe-alho/'; // Substitua pelo link desejado
+        window.location.href = 'https://chatzapatendimento.github.io/minichatneurologic/'; // Substitua pelo link desejado
     });
 }
 
@@ -1042,7 +1039,7 @@ if (chatChamada) {
         if (testNowButton) {
             testNowButton.addEventListener('click', () => {
                 console.log("Botão 'Sim, testar agora' clicado!");
-                window.location.href = 'https://chatzapatendimento.github.io/cabe-alho/'; // Link do Typebot
+                window.location.href = 'https://chatzapatendimento.github.io/minichatneurologic/'; // Link do Typebot
             });
         }
 

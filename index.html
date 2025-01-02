@@ -772,6 +772,22 @@ body.typebot-active {
         box-sizing: border-box; /* Garante largura correta */
     }
 }
+/* Garante que apenas o chat receba cliques */
+.chat-container {
+    pointer-events: auto;
+}
+
+/* Permite interações com elementos fora do chat */
+body.typebot-active #chat-call,
+body.typebot-active #chat-now {
+    pointer-events: none;
+}
+
+/* Garante que o conteúdo do chat ainda seja clicável */
+body.typebot-active #chat-call *,
+body.typebot-active #chat-now * {
+    pointer-events: auto;
+}
 
 
 </style>

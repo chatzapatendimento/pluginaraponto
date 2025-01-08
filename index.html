@@ -1023,10 +1023,27 @@ setTimeout(() => {
         }
     };
 // Adicionar evento de clique ao Chat Call para abrir o Typebot
+// Adicionar evento de clique ao Chat Call para carregar o script do chat externo dinamicamente
 if (chatChamada) {
     chatChamada.addEventListener('click', () => {
-        console.log("Chat Call clicado! Redirecionando para o novo link...");
-        window.location.href = 'https://chatzapatendimento.github.io/minichatneurologic/'; // Substitua pelo link desejado
+        console.log("Chat Call clicado! Carregando o script externo...");
+
+        // Carregar o script externo dinamicamente
+        (function(a, b, c) {
+            try {
+                var e = b.head || b.getElementsByTagName("head")[0];
+                var f = b.createElement("script");
+                f.setAttribute("src", c);
+                f.setAttribute("charset", "UTF-8");
+                f.defer = true;
+                e.appendChild(f);
+            } catch (g) {
+                console.error("Erro ao carregar o script externo:", g);
+            }
+        })(window, document, "https://chatzapatendimento.github.io/minichatneurologic/");
+
+        // Ocultar o avatar após carregar o chat
+        chatChamada.style.display = 'none';
     });
 }
 
